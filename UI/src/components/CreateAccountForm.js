@@ -86,8 +86,6 @@ class CreateAccountForm extends Component {
       return fieldTouched && hasError ? true : false;
     };
 
-    console.log(errors);
-
     return (
       <Container textAlign="center" style={{ paddingTop: "25px" }}>
         <Grid columns={16} centered>

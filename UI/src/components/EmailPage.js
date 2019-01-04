@@ -78,9 +78,9 @@ const EmailPage = renderEmail(
         <p>
           To install 4D, simply launch the installer and follow the instruction
           on the screen. Once 4D product has been instsalled, follow the steps
-          below to complete 4D product activation for your trial period.
+          below to complete 4D product activation for your trial period. To
+          activate your license:
         </p>
-        <p>To activate your license</p>
         <ol>
           <li>Launch 4D</li>
           <li>Select License Manager from Help menu</li>
