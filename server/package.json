@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "nodemailer": "^5.0.0"
   },

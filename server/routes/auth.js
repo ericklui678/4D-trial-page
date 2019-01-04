@@ -1,14 +1,16 @@
 import express from "express";
 import nodeMailer from "nodemailer";
+import dotenv from "dotenv";
 const router = express.Router();
+dotenv.config();
 
 let transporter = nodeMailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
   secure: true, //true for 465 port, false for other ports
   auth: {
-    user: "erickjin.lui@gmail.com",
-    pass: "fake123"
+    user: process.env.EMAIL,
+    pass: process.env.PW
   }
 });
 
