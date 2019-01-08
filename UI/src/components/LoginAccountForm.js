@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { Button, Container, Grid, Form, Label } from "semantic-ui-react";
+import EmailContent from "./EmailContent";
 import PropTypes from "prop-types";
 import axios from "axios";
-
-import EmailPage from "./EmailPage";
 
 class LoginAccountForm extends Component {
   state = {
@@ -18,15 +17,15 @@ class LoginAccountForm extends Component {
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   onSubmit = () => {
-    axios.post("/api/email", { content: EmailPage }).then(res => {
+    axios.post("/api/email", { content: EmailContent }).then(res => {
       console.log(res.data);
     });
+
     // this.setState({
     //   serverError: {
     //     email: "Email does not match any account. Please create an account."
     //   }
     // });
-
     // this.setState({
     //   serverError: {
     //     password: "Incorrect password"

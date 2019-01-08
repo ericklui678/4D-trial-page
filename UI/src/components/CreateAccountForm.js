@@ -1,7 +1,15 @@
 import React, { Component } from "react";
-import { Button, Container, Grid, Form, Label } from "semantic-ui-react";
+import {
+  Button,
+  Container,
+  Grid,
+  Form,
+  Label,
+  Message
+} from "semantic-ui-react";
 import PropTypes from "prop-types";
 import Validator from "validator";
+import axios from "axios";
 
 class CreateAccountForm extends Component {
   state = {
@@ -18,30 +26,25 @@ class CreateAccountForm extends Component {
       password: false,
       confirm: false,
       phone: false
-    }
+    },
+    serverError: null
   };
 
   onSubmit = () => {
-    const {
-      first_name,
-      last_name,
-      email,
-      password,
-      confirm,
-      phone
-    } = this.state;
-
-    const errors = this.validate({
-      first_name,
-      last_name,
-      email,
-      password,
-      confirm,
-      phone
-    });
+    const errors = this.validate(this.state);
 
     if (Object.keys(errors).length === 0) {
-      console.log("no errors");
+      const user = {
+        first_name: this.state.first_name,
+        last_name: this.state.last_name,
+        email: this.state.email,
+        password: this.state.password,
+        phone: this.state.phone
+      };
+
+      axios.post("/api/users", { credentials: user }).then(res => {
+        console.log(res.data);
+      });
     }
   };
 
@@ -183,9 +186,16 @@ class CreateAccountForm extends Component {
                   fluid
                   color="teal"
                   disabled={!!Object.keys(errors).length}
+                  onClick={() => this.onSubmit()}
                 >
                   NEXT
                 </Button>
+                {this.state.serverError && (
+                  <Message negative>
+                    <Message.Header>Server Error: 400</Message.Header>
+                    <p>{this.state.serverError}</p>
+                  </Message>
+                )}
               </Form>
             </Grid.Column>
           </Grid.Row>
