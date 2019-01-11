@@ -1,6 +1,6 @@
 /* @media query to round borders for banner image when width > 767px */
 @media only screen and (min-width: 767px) {
-  .ui.grid .eight.wide.computer .banner {
+  .ui.grid .twelve.wide.computer .banner {
     border-radius: 10px !important;
   }
 }
@@ -13,6 +13,11 @@
 
 .title {
   font-weight: 100;
+}
+
+.title-sm {
+  font-weight: 100;
+  font-size: 18pt;
 }
 
 .cursorPointer {

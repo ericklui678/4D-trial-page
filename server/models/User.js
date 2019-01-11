@@ -7,7 +7,8 @@ const schema = mongoose.Schema(
     last_name: String,
     email: String,
     passwordHash: String,
-    phone: String
+    phone: String,
+    firstRequest: Boolean
   },
   { timestamps: true }
 );
@@ -26,7 +27,8 @@ schema.methods.toAuthJSON = function toAuthJSON() {
     first_name: this.first_name,
     last_name: this.last_name,
     email: this.email,
-    token: this.generateJWT()
+    token: this.generateJWT(),
+    createdAt: this.createdAt
   };
 };
 

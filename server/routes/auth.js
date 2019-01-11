@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import Joi from "joi";
 import User from "../models/User";
+const saltRounds = 10;
 const router = express.Router();
 dotenv.config();
 
@@ -61,12 +62,28 @@ router.post("/email", (req, res) => {
 
 router.post("/users", (req, res) => {
   const { credentials } = req.body;
+  const { email, password } = credentials;
   const { error } = validateUser(credentials);
 
-  console.log(error);
+  // status 400 if validation errors
   if (error) return res.status(400).send(error.details[0].message);
 
-  res.status(200).send({ status: true });
+  // if no errors, hash pw and check db whether email exists
+  bcrypt.hash(password, saltRounds).then(hashedPassword => {
+    let userObj = Object.assign({}, credentials);
+    userObj.passwordHash = hashedPassword;
+
+    const user = new User(userObj);
+    User.findOne({ email: user.email }).then(foundUser => {
+      if (foundUser) {
+        res.status(400).json({ errors: "Email already exists" });
+      } else {
+        user.save().then(user => {
+          res.json({ user: user.toAuthJSON() });
+        });
+      }
+    });
+  });
 });
 
 export default router;

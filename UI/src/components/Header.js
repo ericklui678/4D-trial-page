@@ -12,10 +12,10 @@ const Header = ({ title }) => (
       </Grid.Row>
       <Grid.Row>
         <Grid.Column
-          tablet={16}
-          computer={10}
-          largeScreen={8}
-          widescreen={8}
+          tablet={16} // 16
+          computer={12} // 10
+          largeScreen={10} // 8
+          widescreen={10} // 8
           textAlign="center"
         >
           <h1 className="title">{title}</h1>
@@ -25,9 +25,9 @@ const Header = ({ title }) => (
         <Grid.Column
           className="bannerArea"
           tablet={16}
-          computer={10}
-          largeScreen={8}
-          widescreen={8}
+          computer={12}
+          largeScreen={10}
+          widescreen={10}
         >
           <Image className="banner" src="/images/banner.png" alt="4D logo" />
         </Grid.Column>

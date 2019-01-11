@@ -7,6 +7,7 @@ import {
   Label,
   Message
 } from "semantic-ui-react";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import Validator from "validator";
 import axios from "axios";
@@ -27,12 +28,15 @@ class CreateAccountForm extends Component {
       confirm: false,
       phone: false
     },
-    serverError: null
+    statusCode: null,
+    errorMessage: null
   };
 
   onSubmit = () => {
     const errors = this.validate(this.state);
 
+    // if no errors, POST request to "/api/users"
+    // return { users: ... } json
     if (Object.keys(errors).length === 0) {
       const user = {
         first_name: this.state.first_name,
@@ -42,9 +46,22 @@ class CreateAccountForm extends Component {
         phone: this.state.phone
       };
 
-      axios.post("/api/users", { credentials: user }).then(res => {
-        console.log(res.data);
-      });
+      axios
+        .post("/api/users", { credentials: user })
+        .then(res => {
+          // if user successfully created, reroute to confirmation
+          if (res.data.user) {
+            console.log(res.data.user);
+            this.props.history.push("/email");
+          }
+        })
+        .catch(err => {
+          console.log(err.response);
+          this.setState({
+            statusCode: err.response.status,
+            errorMessage: err.response.data.errors
+          });
+        });
     }
   };
 
@@ -78,7 +95,9 @@ class CreateAccountForm extends Component {
       password,
       confirm,
       phone,
-      touched
+      touched,
+      statusCode,
+      errorMessage
     } = this.state;
 
     const errors = this.validate(this.state);
@@ -190,10 +209,10 @@ class CreateAccountForm extends Component {
                 >
                   NEXT
                 </Button>
-                {this.state.serverError && (
+                {errorMessage && (
                   <Message negative>
-                    <Message.Header>Server Error: 400</Message.Header>
-                    <p>{this.state.serverError}</p>
+                    <Message.Header>Error {statusCode}</Message.Header>
+                    <p>{errorMessage}</p>
                   </Message>
                 )}
               </Form>
@@ -215,4 +234,4 @@ CreateAccountForm.propTypes = {
   toggleForm: PropTypes.func.isRequired
 };
 
-export default CreateAccountForm;
+export default withRouter(CreateAccountForm);
