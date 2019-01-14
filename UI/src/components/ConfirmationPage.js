@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./Header";
-import { Column, Container, Grid } from "semantic-ui-react";
+import { Container, Grid } from "semantic-ui-react";
 
 const title = "THANK YOU FOR YOUR INTEREST IN 4D PRODUCTS";
 

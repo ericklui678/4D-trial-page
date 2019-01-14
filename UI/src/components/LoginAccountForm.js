@@ -17,10 +17,9 @@ class LoginAccountForm extends Component {
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   onSubmit = () => {
-    axios.post("/api/email", { content: EmailContent }).then(res => {
-      console.log(res.data);
-    });
-
+    // axios.post("/api/email", { content: EmailContent }).then(res => {
+    //   console.log(res.data);
+    // });
     // this.setState({
     //   serverError: {
     //     email: "Email does not match any account. Please create an account."

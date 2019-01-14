@@ -8,6 +8,7 @@ import {
   Message
 } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
+import EmailContent from "./EmailContent";
 import PropTypes from "prop-types";
 import Validator from "validator";
 import axios from "axios";
@@ -52,7 +53,11 @@ class CreateAccountForm extends Component {
           // if user successfully created, reroute to confirmation
           if (res.data.user) {
             console.log(res.data.user);
-            this.props.history.push("/email");
+            // send email html to server route "/api/email"
+            axios.post("/api/email", { content: EmailContent }).then(res => {
+              console.log(res.data);
+              this.props.history.push("/confirmation");
+            });
           }
         })
         .catch(err => {

@@ -1,6 +1,11 @@
 import React from "react";
 import { Email, Item, Image, renderEmail } from "react-html-email";
-import { Button, Label, Segment } from "semantic-ui-react";
+import { Segment } from "semantic-ui-react";
+
+const title = {
+  fontSize: "14pt",
+  fontWeight: "bold"
+};
 
 const EmailContent = renderEmail(
   <Email title="Trial license installation">
@@ -13,7 +18,7 @@ const EmailContent = renderEmail(
       />
     </Item>
     <Item>
-      Dear [INSERT NAME HERE],
+      Dear [NAME HERE],
       <br />
       <br />
     </Item>
@@ -24,22 +29,32 @@ const EmailContent = renderEmail(
       <br />
       <br />
     </Item>
-    <Item>Trial License Number:</Item>
-    <Item>
+    <Item style={title}>Trial License Number</Item>
+    <Item style={{ fontSize: "20pt", fontWeight: "100" }}>
       4DDE17U00USS12SMER
       <br />
       <br />
     </Item>
-    <Item>Download installer:</Item>
+    <Item style={title}>Download installer</Item>
     <Item>
-      <Button color="blue">Mac</Button>
-      <Button color="blue">Windows</Button>
+      <a href="http://download.4d.com/Products/Current/4D_v17/Installers/4D_v17.0_Mac.dmg">
+        Mac
+      </a>
+      &nbsp;
+      <a href="http://download.4d.com/Products/Current/4D_v17/Installers/4D_v17.0_Windows_64-bit.exe">
+        Windows
+      </a>
       <br />
       <br />
     </Item>
-    <Item>Minimum System Requirements:</Item>
+    <Item style={title}>Minimum System Requirements</Item>
     <Item>
-      <Segment style={{}}>
+      <Segment
+        style={{
+          border: "2px solid #bababa",
+          padding: "10px"
+        }}
+      >
         <p>
           Windows 7 - Windows 10 (64-bit versions) Windows Server 2008 R2 -
           Windows Server 2016
@@ -60,12 +75,12 @@ const EmailContent = renderEmail(
       </Segment>
       <br />
     </Item>
-    <Item>Installation and activation:</Item>
+    <Item style={title}>Installation and activation</Item>
     <Item>
-      <Segment style={{}}>
+      <Segment style={{ border: "2px solid #bababa", padding: "10px" }}>
         <p>
           To install 4D, simply launch the installer and follow the instruction
-          on the screen. Once 4D product has been instsalled, follow the steps
+          on the screen. Once 4D product has been installed, follow the steps
           below to complete 4D product activation for your trial period. To
           activate your license:
         </p>
