@@ -53,6 +53,7 @@ class CreateAccountForm extends Component {
           // if user successfully created, reroute to confirmation
           if (res.data.user) {
             console.log(res.data.user);
+            sessionStorage.setItem("JWT", res.data.user.token);
             // send email html to server route "/api/email"
             axios.post("/api/email", { content: EmailContent }).then(res => {
               console.log(res.data);

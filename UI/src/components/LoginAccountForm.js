@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Button, Container, Grid, Form, Label } from "semantic-ui-react";
-import EmailContent from "./EmailContent";
+import { Button, Container, Grid, Form, Message } from "semantic-ui-react";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
 
@@ -8,36 +8,36 @@ class LoginAccountForm extends Component {
   state = {
     email: "",
     password: "",
-    serverError: {
-      email: "",
-      password: ""
-    }
+    statusCode: null,
+    errorMessage: null
   };
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   onSubmit = () => {
-    // axios.post("/api/email", { content: EmailContent }).then(res => {
-    //   console.log(res.data);
-    // });
-    // this.setState({
-    //   serverError: {
-    //     email: "Email does not match any account. Please create an account."
-    //   }
-    // });
-    // this.setState({
-    //   serverError: {
-    //     password: "Incorrect password"
-    //   }
-    // });
+    const user = {
+      email: this.state.email,
+      password: this.state.password
+    };
+
+    axios
+      .post("/api/session", { credentials: user })
+      .then(res => {
+        // set sessionStorage to JWT (JSON Web Token)
+        sessionStorage.setItem("JWT", res.data.user.token);
+        this.props.history.push("/trial");
+      })
+      .catch(err => {
+        console.log(err.response);
+        this.setState({
+          statusCode: err.response.data.status,
+          errorMessage: err.response.data.errors
+        });
+      });
   };
 
   render() {
-    const { email, password, serverError } = this.state;
-
-    const displayServerError = name => {
-      return serverError[name] ? true : false;
-    };
+    const { email, password, statusCode, errorMessage } = this.state;
 
     return (
       <Container textAlign="center" style={{ paddingTop: "25px" }}>
@@ -53,13 +53,6 @@ class LoginAccountForm extends Component {
               widescreen={8}
             >
               <Form>
-                {displayServerError("email") && (
-                  <Label
-                    color="red"
-                    pointing="below"
-                    content={serverError.email}
-                  />
-                )}
                 <Form.Input
                   name="email"
                   placeholder="Email"
@@ -67,15 +60,7 @@ class LoginAccountForm extends Component {
                   fluid
                   onBlur={this.handleBlur}
                   onChange={this.handleChange}
-                  error={displayServerError("email")}
                 />
-                {displayServerError("password") && (
-                  <Label
-                    color="red"
-                    pointing="below"
-                    content={serverError.password}
-                  />
-                )}
                 <Form.Input
                   name="password"
                   placeholder="Password"
@@ -84,7 +69,6 @@ class LoginAccountForm extends Component {
                   fluid
                   onBlur={this.handleBlur}
                   onChange={this.handleChange}
-                  error={displayServerError("password")}
                 />
                 <Button
                   type="submit"
@@ -94,6 +78,12 @@ class LoginAccountForm extends Component {
                 >
                   NEXT
                 </Button>
+                {errorMessage && (
+                  <Message negative>
+                    <Message.Header>Error {statusCode}</Message.Header>
+                    <p>{errorMessage}</p>
+                  </Message>
+                )}
               </Form>
             </Grid.Column>
           </Grid.Row>
@@ -113,4 +103,4 @@ LoginAccountForm.propTypes = {
   toggleForm: PropTypes.func.isRequired
 };
 
-export default LoginAccountForm;
+export default withRouter(LoginAccountForm);

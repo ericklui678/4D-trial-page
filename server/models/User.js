@@ -8,7 +8,7 @@ const schema = mongoose.Schema(
     email: String,
     passwordHash: String,
     phone: String,
-    firstRequest: Boolean
+    licenseAlreadySent: Boolean
   },
   { timestamps: true }
 );

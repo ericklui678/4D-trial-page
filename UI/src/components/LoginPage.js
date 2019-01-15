@@ -5,8 +5,14 @@ import LoginAccountForm from "./LoginAccountForm";
 
 class LoginPage extends Component {
   state = {
-    displayLogin: false
+    displayLogin: true
   };
+
+  componentDidMount() {
+    if (sessionStorage.getItem("JWT") !== null) {
+      this.props.history.push("/trial");
+    }
+  }
 
   toggleForm = () => {
     this.setState({ displayLogin: !this.state.displayLogin });

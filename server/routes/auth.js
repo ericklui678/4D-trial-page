@@ -60,6 +60,7 @@ router.post("/email", (req, res) => {
   });
 });
 
+// "/api/users" for registering new users
 router.post("/users", (req, res) => {
   const { credentials } = req.body;
   const { email, password } = credentials;
@@ -78,11 +79,35 @@ router.post("/users", (req, res) => {
       if (foundUser) {
         res.status(400).json({ errors: "Email already exists" });
       } else {
+        user.licenseAlreadySent = true;
         user.save().then(user => {
           res.json({ user: user.toAuthJSON() });
         });
       }
     });
+  });
+});
+
+// "/api/session" for authenticating login credentials
+router.post("/session", (req, res) => {
+  const { credentials } = req.body;
+  const { email, password } = credentials;
+
+  User.findOne({ email }).then(foundUser => {
+    if (foundUser) {
+      // check hashed password
+      bcrypt.compare(password, foundUser.passwordHash).then(match => {
+        // if pw match, return user json
+        if (match) return res.json({ user: foundUser.toAuthJSON() });
+        // else return error to client
+        return res.status(401).json({ errors: "Incorrect password" });
+      });
+    } else {
+      return res.status(400).json({
+        errors:
+          "Email has not been registered under 4D. Please create an account."
+      });
+    }
   });
 });
 
