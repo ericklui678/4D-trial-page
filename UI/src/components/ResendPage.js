@@ -6,12 +6,11 @@ import { withRouter } from "react-router-dom";
 import { Button, Container, Grid } from "semantic-ui-react";
 
 class ResendPage extends Component {
-  componentDidMount() {
-    // sessionStorage.clear();
-    if (sessionStorage.getItem("JWT") === null) {
-      this.props.history.push("/");
-    }
-  }
+  // componentDidMount() {
+  //   if (sessionStorage.getItem("JWT") === null) {
+  //     this.props.history.push("/");
+  //   }
+  // }
 
   sendEmail = () => {
     axios.post("/api/email", { content: EmailContent }).then(res => {

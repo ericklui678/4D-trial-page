@@ -20,20 +20,23 @@ class LoginAccountForm extends Component {
       password: this.state.password
     };
 
-    axios
-      .post("/api/session", { credentials: user })
-      .then(res => {
-        // set sessionStorage to JWT (JSON Web Token)
-        sessionStorage.setItem("JWT", res.data.user.token);
-        this.props.history.push("/trial");
-      })
-      .catch(err => {
-        console.log(err.response);
-        this.setState({
-          statusCode: err.response.data.status,
-          errorMessage: err.response.data.errors
-        });
-      });
+    console.log({ credentials: user });
+    this.props.history.push("/trial");
+
+    // ADD THIS WHEN SERVER IS SETUP
+    // axios
+    //   .post("/api/session", { credentials: user })
+    //   .then(res => {
+    //     sessionStorage.setItem("JWT", res.data.user.token);
+    //     this.props.history.push("/trial");
+    //   })
+    //   .catch(err => {
+    //     console.log(err.response);
+    //     this.setState({
+    //       statusCode: err.response.data.status,
+    //       errorMessage: err.response.data.errors
+    //     });
+    //   });
   };
 
   render() {
@@ -71,7 +74,7 @@ class LoginAccountForm extends Component {
                   onChange={this.handleChange}
                 />
                 <Button
-                  type="submit"
+                  type="button"
                   fluid
                   color="teal"
                   onClick={this.onSubmit}

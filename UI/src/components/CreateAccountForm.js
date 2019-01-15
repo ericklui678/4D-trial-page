@@ -36,39 +36,40 @@ class CreateAccountForm extends Component {
   onSubmit = () => {
     const errors = this.validate(this.state);
 
-    // if no errors, POST request to "/api/users"
-    // return { users: ... } json
-    if (Object.keys(errors).length === 0) {
-      const user = {
-        first_name: this.state.first_name,
-        last_name: this.state.last_name,
-        email: this.state.email,
-        password: this.state.password,
-        phone: this.state.phone
-      };
+    this.props.history.push("/confirmation");
 
-      axios
-        .post("/api/users", { credentials: user })
-        .then(res => {
-          // if user successfully created, reroute to confirmation
-          if (res.data.user) {
-            console.log(res.data.user);
-            sessionStorage.setItem("JWT", res.data.user.token);
-            // send email html to server route "/api/email"
-            axios.post("/api/email", { content: EmailContent }).then(res => {
-              console.log(res.data);
-              this.props.history.push("/confirmation");
-            });
-          }
-        })
-        .catch(err => {
-          console.log(err.response);
-          this.setState({
-            statusCode: err.response.status,
-            errorMessage: err.response.data.errors
-          });
-        });
-    }
+    // ADD THIS WHEN SERVER IS RUNNING
+    // if (Object.keys(errors).length === 0) {
+    //   const user = {
+    //     first_name: this.state.first_name,
+    //     last_name: this.state.last_name,
+    //     email: this.state.email,
+    //     password: this.state.password,
+    //     phone: this.state.phone
+    //   };
+    //
+    //   axios
+    //     .post("/api/users", { credentials: user })
+    //     .then(res => {
+    //       // if user successfully created, reroute to confirmation
+    //       if (res.data.user) {
+    //         console.log(res.data.user);
+    //         sessionStorage.setItem("JWT", res.data.user.token);
+    //         // send email html to server route "/api/email"
+    //         axios.post("/api/email", { content: EmailContent }).then(res => {
+    //           console.log(res.data);
+    //           this.props.history.push("/confirmation");
+    //         });
+    //       }
+    //     })
+    //     .catch(err => {
+    //       console.log(err.response);
+    //       this.setState({
+    //         statusCode: err.response.status,
+    //         errorMessage: err.response.data.errors
+    //       });
+    //     });
+    // }
   };
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
